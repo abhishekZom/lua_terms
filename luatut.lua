@@ -298,6 +298,109 @@ convertModule = require("convert")
 print(string.format("%.3f cm", convertModule.ftToCm(12)))
 
 
--- 
+-- META TABLES ===========================================================
+
+aTable = {}
+for x=1, 10 do
+  aTable[x] = x
+end
+
+mt = {
+  __add = function (table1, table2)
+    sumTable = {}
+
+    for y = 1, #table1 do
+      if (table1[y] != nil) and (table2[y] != nil) then
+        sumTable[y] = table1[y] + table2[y]
+
+      else
+        sumTable[y] = 0
+      end
+    end
+    return sumTable
+  end,
+
+  __eq = function (table1, table2)
+    return table.value <= table2.value
+  end,
+
+  __lt = function (table1, table2)
+    return table1.value < table2.value
+  end,
+
+  __le = function (table1, table2)
+    return table1.value <= table2.value
+  end
+}
+
+setmetatable(aTable, mt)
+
+print(aTable == aTable)
+
+addTable = {}
+
+addTable = aTable + aTable
+
+for z = 1, #addTable do
+  print(addTable[z])
+end
+
+
+
+
+
+
+-- OOPS (sort of) ======================================================
+
+Animal = {height = 0, weight = 0, name = "No Name", sound="No Sound"}
+
+function Animal:new (height, weight, name, sound)
+  setmetatable({}, Animal)
+
+  self.height = height
+  self.weight = weight
+  self.name = name
+  self.sound = sound
+  
+  return self
+end
+
+function Animal:toString()
+  animalStr = string.format("%s weighs %.1f lbs, is %.1f in tall and says %s", self.name, self.weight, self.height, self.sound)
+
+end
+
+spot = new Animal:new(10, 15, "Spot", "Woof")
+
+print(spot.weight)
+print(spot:tostring())
+
+
+
+-- INHERITENCE ==================================================================
+--
+Cat = Animal:new()
+
+function Cat:new(height, weight, name, sound, favFood)
+
+  setmetatable({}, Animal)
+  self.height = height
+  self.weight = weight
+  self.name = name
+  self.sound = sound
+  self.favFood = favFood
+end
+
+function Animal:toString()
+
+  animalStr = string.format("%s weighs %.1f lbs, is %.1f in tall and says %s and eats %s", self.name, self.weight, self.height, self.sound, self.favFood)
+
+end
+
+
+
+fluffy = Cat:new(10,15,"Fluffy", "Meow", "Tuna")
+
+print(fluffy:tostring())
 
 
