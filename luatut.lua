@@ -18,6 +18,8 @@ name = "Derek" -- dynamic inference of type
 
 io.write("size of string", #name , "\n", "jafoisjfsoife \n")
 
+
+
 -- DATA TYPES =========================================================
 
 -- number (floating point)
@@ -40,8 +42,6 @@ io.write(type(isAbleToDrive), "\n")
 
 io.write(type(madeUpVar), "\n")
 -- default value for variables is nil
-
-
 
 
 
@@ -72,7 +72,6 @@ io.write("math.random() : ", math.random(), "\n")
 
 
 -- CONDITIONALS ==============================================
-
 age = 13
 if age < 13 then
   io.write("You can go to school", "\n")
@@ -98,12 +97,158 @@ canVote = age > 18 and true or false -- (Lua implementation)
 print(string.format("not true = %s", tostring(not true)))
 
 
+-- STRING OPERATIONS ===============================================================
+
+quote = "I changed my password to incorrect. So that when I forget ..."
+
+io.write("Quote Length ", string.len(quote), "\n")
+io.write("Quote Length ", string.len(quote), "\n")
+io.write("Replace I with me ", string.gsub(quote, "I", "me"), "\n")
+io.write("Index of password : ", string.find(quote, "password"), "\n")
+io.write("Quote Uppercase : ", string.upper(quote), "\n")
+io.write("Quote Lowercase : ", string.lower(quote), "\n")
+
+
+
+-- LOOPING IN LUA =======================================================
+
+-- While loop
+i = 1
+while i<=10 do
+  io.write(i)
+  i = i+1
+  if i == 8 then break end
+end
+print("\n")
+
+
+-- repeat or do while loop
+repeat
+  io.write("Enter your guess : ")
+  guess = io.read()
+until tonumber(guess) == 15
+
+
+-- for loop
+for i = 1, 10, 1 do
+  io.write(i)
+end
+
+
+-- iterating over an array
+months = {"January", "February", "March", "April", "June", "July", "August", "September",
+  "October", "November", "December"
+}
+for key, value in pairs(months) do
+  io.write(value, " ")
+end
 
 
 
 
 
+-- TABLE ==================================================================
+-- A table in lua can take the shape of arrays, tuples, object, dictionaries etc...
+
+
+aTable = {}
+for i =1, 10 do
+  aTable[i] = i
+end
+
+io.write("First : ", aTable[1], "\n")
+
+io.write("Number of Items : ", #aTable, "\n")
+
+table.insert(aTable, 1, 0)
+
+print(table.concat(aTable, ", "))
+
+table.remove(aTable, 1)
+print(table.concat(aTable, ", "))
 
 
 
 
+aMultiTable = {}
+for i = 0,9 do
+  aMultiTable[i] = {}
+  for j = 1, 9 do
+    aMultiTable[i][j] = tostring(i) .. tostring(j)
+  end
+end
+
+io.write("Table[0][0] : ", aMultiTable[1],[2])
+for i = 0, 9 do
+  for j= 0, 9 do
+    io.write(aMultiTable[i][j], " : ")
+  end
+  print()
+end
+
+
+
+-- FUNCTIONS =============================================================
+
+function getSum(num1, num2)
+  return num1 + num2
+end
+print(string.format("5 + 2 = %d", getSum(5, 2)))
+
+
+function splitStr(theString)
+  stringTable = {}
+  local i = 1
+  for word in string.gmatch(theString, "[^%s]+") do
+    stringTable[i] = word
+    i = i + 1
+  end
+  return stringTable, i
+end
+
+
+splitStrTable, numOfStr = splitStr("The Turtle")
+for j = 1, numOfStr do
+  print(string.format("%d : %s", j, splitStrTable))
+end
+
+-- CLOSURES ===========================================================
+
+function outerFunc()
+  local i = 0
+  return function ()
+    i = i + 1
+    return i
+  end
+end
+
+getI = outerFunc()
+print(getI())
+
+
+-- COROUTINES ==============================================================
+
+co = coroutine.create(function ()
+  for i = 1,10,1 do
+    print(i)
+    print(coroutine.status(co))
+    if i == 5 then
+      coroutine.yield()
+    end
+  end
+end)
+
+print(coroutine.status(co))
+
+coroutine.resume(co)
+
+print(coroutine.status(co))
+
+co2 = coroutine.create(function()
+  for i = 101, 110, 1 do
+    print(i)
+  end
+end)
+
+coroutine.resume(co2)
+coroutine.resume(co)
