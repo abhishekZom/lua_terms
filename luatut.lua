@@ -72,6 +72,7 @@ io.write("math.random() : ", math.random(), "\n")
 
 
 -- CONDITIONALS ==============================================
+
 age = 13
 if age < 13 then
   io.write("You can go to school", "\n")
@@ -147,9 +148,9 @@ end
 
 
 
+
 -- TABLE ==================================================================
 -- A table in lua can take the shape of arrays, tuples, object, dictionaries etc...
-
 
 aTable = {}
 for i =1, 10 do
@@ -168,8 +169,6 @@ table.remove(aTable, 1)
 print(table.concat(aTable, ", "))
 
 
-
-
 aMultiTable = {}
 for i = 0,9 do
   aMultiTable[i] = {}
@@ -185,6 +184,7 @@ for i = 0, 9 do
   end
   print()
 end
+
 
 
 
@@ -211,6 +211,8 @@ splitStrTable, numOfStr = splitStr("The Turtle")
 for j = 1, numOfStr do
   print(string.format("%d : %s", j, splitStrTable))
 end
+
+
 
 -- CLOSURES ===========================================================
 
@@ -252,3 +254,50 @@ end)
 
 coroutine.resume(co2)
 coroutine.resume(co)
+
+
+
+
+-- FILE IO ====================================================================
+
+-- Different ways to work with files
+-- r: Read only (default)
+-- w: Overwrite or create a new file
+-- a: append or create a new file
+-- r+: Read & write existing file
+-- w+: Overwrite read or create a file
+-- a+: Append read or create file
+
+file = io.open("test.lua", "w+")
+file:write("Random String of text \n")
+
+file:write("Some more text\n")
+
+file:seek("set", 0)
+
+print(file: read("*a"))
+
+file:close()
+
+file = io.open("text.lua", "a+")
+
+file:write("Even more text\n")
+
+file:seek("set", 0)
+
+print(file:read("*a"))
+
+file:close()
+
+
+
+-- Modules ============================================================
+
+convertModule = require("convert")
+
+print(string.format("%.3f cm", convertModule.ftToCm(12)))
+
+
+-- 
+
+
